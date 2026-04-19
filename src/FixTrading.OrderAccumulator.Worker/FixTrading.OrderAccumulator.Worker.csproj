@@ -4,6 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+	<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <UserSecretsId>dotnet-FixTrading.OrderAccumulator.Worker-d9bfa084-a25b-4454-95f0-a9545a863baf</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>..\..</DockerfileContext>
@@ -12,5 +13,9 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.1" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.22.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FixTrading.OrderProcessing.Infrastructure.Fix\FixTrading.OrderProcessing.Infrastructure.Fix.csproj" />
   </ItemGroup>
 </Project>
