@@ -40,13 +40,27 @@ public static class OrderSideExtensions
         return side;
     }
 
-    public static bool IsValid(string? value) =>
-        !string.IsNullOrWhiteSpace(value) && SideMap.ContainsKey(value);
+    /// <summary>
+    /// Converte char FIX (Tag 54) para OrderSide.
+    /// </summary>
+    public static OrderSide FromFixValue(char fixValue) => fixValue switch
+    {
+        '1' => OrderSide.Buy,
+        '2' => OrderSide.Sell,
+        _ => throw new DomainException($"Invalid FIX side value: {fixValue}", "INVALID_SIDE")
+    };
 
+    /// <summary>
+    /// Converte OrderSide para char FIX (Tag 54).
+    /// </summary>
     public static char ToFixValue(this OrderSide side) => side switch
     {
         OrderSide.Buy => '1',
         OrderSide.Sell => '2',
         _ => throw new DomainException($"Unknown side: {side}", "INVALID_SIDE")
     };
+
+    public static bool IsValid(string? value) =>
+        !string.IsNullOrWhiteSpace(value) && SideMap.ContainsKey(value);
+
 }
