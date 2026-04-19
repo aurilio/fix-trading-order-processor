@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.14.36811.4
+# Visual Studio Version 18
+VisualStudioVersion = 18.4.11620.152 stable
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FixTrading.OrderGenerator.Api", "src\FixTrading.Ordergenerator.Api\FixTrading.OrderGenerator.Api.csproj", "{234E12BA-B070-46FB-BEA1-8253744968FF}"
 EndProject
@@ -16,6 +16,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FixTrading.OrderProcessing.Domain", "src\FixTrading.OrderProcessing.Domain\FixTrading.OrderProcessing.Domain.csproj", "{C5EDD406-54D4-4688-A05E-23D1F1668421}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FixTrading.OrderProcessing.Infrastructure.Fix", "src\FixTrading.OrderProcessing.Infrastructure.Fix\FixTrading.OrderProcessing.Infrastructure.Fix.csproj", "{A10B6D9F-6BF1-4483-9E41-B79D922649B6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FixTrading.OrderProcessing.Application", "src\FixTrading.OrderProcessing.Application\FixTrading.OrderProcessing.Application.csproj", "{B89A5EB4-AD42-4355-9828-D302F8AF5AB4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{A10B6D9F-6BF1-4483-9E41-B79D922649B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A10B6D9F-6BF1-4483-9E41-B79D922649B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A10B6D9F-6BF1-4483-9E41-B79D922649B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B89A5EB4-AD42-4355-9828-D302F8AF5AB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B89A5EB4-AD42-4355-9828-D302F8AF5AB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B89A5EB4-AD42-4355-9828-D302F8AF5AB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B89A5EB4-AD42-4355-9828-D302F8AF5AB4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -48,6 +54,7 @@ Global
 		{65E7607A-0685-4856-8AE7-A52B3A436831} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{C5EDD406-54D4-4688-A05E-23D1F1668421} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{A10B6D9F-6BF1-4483-9E41-B79D922649B6} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{B89A5EB4-AD42-4355-9828-D302F8AF5AB4} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {21A9262F-E9A6-454D-B19B-3EDA123A7883}
