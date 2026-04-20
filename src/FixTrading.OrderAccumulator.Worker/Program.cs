@@ -1,4 +1,5 @@
 using FixTrading.OrderAccumulator.Worker;
+using FixTrading.OrderProcessing.Application.Abstractions;
 using FixTrading.OrderProcessing.Application.Services;
 using FixTrading.OrderProcessing.Infrastructure.Fix;
 
@@ -6,7 +7,7 @@ var builder = Host.CreateApplicationBuilder(args);
 
 builder.Services.AddFixAcceptor(builder.Configuration);
 
-builder.Services.AddSingleton<ExposureApplicationService>();
+builder.Services.AddSingleton<IExposureApplicationService, ExposureApplicationService>();
 
 builder.Services.AddHostedService<FixAcceptorWorker>();
 
