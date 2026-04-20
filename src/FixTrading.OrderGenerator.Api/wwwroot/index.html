@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Generator - FIX Trading</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        h1 {
+            color: #1a1a2e;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            color: #666;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .status {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 20px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #dc3545;
+        }
+
+        .status-dot.connected {
+            background: #28a745;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        select, input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        select:focus, input:focus {
+            outline: none;
+            border-color: #4a90d9;
+            box-shadow: 0 0 0 3px rgba(74, 144, 217, 0.2);
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #4a90d9 0%, #357abd 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(74, 144, 217, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 16px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .result.success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            display: block;
+        }
+
+        .result.error {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            display: block;
+        }
+
+        .result h3 {
+            margin-bottom: 8px;
+        }
+
+        .result p {
+            margin: 4px 0;
+            font-size: 14px;
+        }
+
+        .result .clordid {
+            font-family: monospace;
+            background: rgba(0,0,0,0.1);
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Order Generator</h1>
+        <p class="subtitle">FIX 4.4 Trading System</p>
+
+        <div class="status">
+            <div class="status-dot" id="statusDot"></div>
+            <span id="statusText">Verificando conexão...</span>
+        </div>
+
+        <form id="orderForm">
+            <div class="form-group">
+                <label for="symbol">Símbolo</label>
+                <select id="symbol" required>
+                    <option value="">Selecione...</option>
+                    <option value="PETR4">PETR4</option>
+                    <option value="VALE3">VALE3</option>
+                    <option value="VIIA4">VIIA4</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="side">Lado</label>
+                <select id="side" required>
+                    <option value="">Selecione...</option>
+                    <option value="Buy">Compra</option>
+                    <option value="Sell">Venda</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="quantity">Quantidade (1 - 99.999)</label>
+                <input type="number" id="quantity" min="1" max="99999" required placeholder="Ex: 100">
+            </div>
+
+            <div class="form-group">
+                <label for="price">Preço (0.01 - 999.99)</label>
+                <input type="number" id="price" min="0.01" max="999.99" step="0.01" required placeholder="Ex: 25.50">
+            </div>
+
+            <button type="submit" id="submitBtn">Enviar Ordem</button>
+        </form>
+
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        const form = document.getElementById('orderForm');
+        const result = document.getElementById('result');
+        const submitBtn = document.getElementById('submitBtn');
+        const statusDot = document.getElementById('statusDot');
+        const statusText = document.getElementById('statusText');
+
+        // Verificar status da conexão FIX
+        async function checkHealth() {
+            try {
+                const response = await fetch('/api/health');
+                const data = await response.json();
+                
+                if (data.fixConnected) {
+                    statusDot.classList.add('connected');
+                    statusText.textContent = 'FIX Conectado';
+                } else {
+                    statusDot.classList.remove('connected');
+                    statusText.textContent = 'FIX Desconectado';
+                }
+            } catch (error) {
+                statusDot.classList.remove('connected');
+                statusText.textContent = 'Erro de conexão';
+            }
+        }
+
+        // Verificar a cada 5 segundos
+        checkHealth();
+        setInterval(checkHealth, 5000);
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Enviando...';
+            result.className = 'result';
+            result.style.display = 'none';
+
+            const order = {
+                symbol: document.getElementById('symbol').value,
+                side: document.getElementById('side').value,
+                quantity: parseInt(document.getElementById('quantity').value),
+                price: parseFloat(document.getElementById('price').value)
+            };
+
+            try {
+                const response = await fetch('/api/orders', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(order)
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.isSuccess) {
+                    result.className = 'result success';
+                    result.innerHTML = `
+                        <h3>Ordem Enviada!</h3>
+                        <p><strong>ClOrdId:</strong> <span class="clordid">${data.clOrdId}</span></p>
+                        <p><strong>Status:</strong> ${data.status}</p>
+                        <p><strong>Mensagem:</strong> ${data.message}</p>
+                        <p><strong>Timestamp:</strong> ${new Date(data.timestamp).toLocaleString()}</p>
+                    `;
+                    form.reset();
+                } else {
+                    result.className = 'result error';
+                    const errorMsg = data.message || data.title || 'Erro desconhecido';
+                    result.innerHTML = `
+                        <h3>Ordem Rejeitada</h3>
+                        <p><strong>Erro:</strong> ${errorMsg}</p>
+                    `;
+                }
+            } catch (error) {
+                result.className = 'result error';
+                result.innerHTML = `
+                    <h3>Erro de Comunicação</h3>
+                    <p>${error.message}</p>
+                `;
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Enviar Ordem';
+            }
+        });
+    </script>
+</body>
+</html>

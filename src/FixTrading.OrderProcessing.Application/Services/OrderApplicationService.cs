@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 
 namespace FixTrading.OrderProcessing.Application.Services;
 
-public sealed class OrderApplicationService
+public sealed class OrderApplicationService : IOrderApplicationService
 {
     private readonly IFixClient _fixClient;
     private readonly TimeProvider _timeProvider;
