@@ -1,3 +1,4 @@
+using FixTrading.OrderProcessing.Application.Abstractions;
 using FixTrading.OrderProcessing.Application.Contracts;
 using FixTrading.OrderProcessing.Domain.Abstractions;
 using FixTrading.OrderProcessing.Domain.Services;
@@ -5,7 +6,7 @@ using Microsoft.Extensions.Logging;
 
 namespace FixTrading.OrderProcessing.Application.Services;
 
-public sealed class ExposureApplicationService
+public sealed class ExposureApplicationService : IExposureApplicationService
 {
     private readonly IOrderRepository _orderRepository;
     private readonly ILogger<ExposureApplicationService> _logger;

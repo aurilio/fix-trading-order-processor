@@ -14,7 +14,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
+    <ProjectReference Include="..\FixTrading.OrderProcessing.Application\FixTrading.OrderProcessing.Application.csproj" />
+    <ProjectReference Include="..\FixTrading.OrderProcessing.Infrastructure.Fix\FixTrading.OrderProcessing.Infrastructure.Fix.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+	<Content Include="..\FixTrading.OrderProcessing.Infrastructure.Fix\FIX44.xml" Link="FIX44.xml">
+		<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	</Content>
   </ItemGroup>
 
 </Project>
