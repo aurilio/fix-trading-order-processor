@@ -1,4 +1,4 @@
-using FixTrading.OrderProcessing.Application.Services;
+using FixTrading.OrderProcessing.Application.Abstractions;
 using FixTrading.OrderProcessing.Domain.Entities;
 using FixTrading.OrderProcessing.Infrastructure.Fix.Server;
 
@@ -8,7 +8,7 @@ namespace FixTrading.OrderAccumulator.Worker;
 public sealed class FixAcceptorWorker : BackgroundService
 {
     private readonly FixAcceptorServer _acceptorServer;
-    private readonly ExposureApplicationService _exposureService;
+    private readonly IExposureApplicationService _exposureService;
     private readonly ILogger<FixAcceptorWorker> _logger;
     
     private int _orderCount;
@@ -16,7 +16,7 @@ public sealed class FixAcceptorWorker : BackgroundService
 
     public FixAcceptorWorker(
         FixAcceptorServer acceptorServer,
-        ExposureApplicationService exposureService,
+        IExposureApplicationService exposureService,
         ILogger<FixAcceptorWorker> logger)
     {
         _acceptorServer = acceptorServer;
