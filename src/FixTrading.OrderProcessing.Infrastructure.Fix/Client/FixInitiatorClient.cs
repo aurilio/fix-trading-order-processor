@@ -56,7 +56,6 @@ public sealed class FixInitiatorClient : IFixClient, IDisposable
 
     public Task<bool> SendNewOrderAsync(Order order, CancellationToken cancellationToken = default)
     {
-        // 3.3 - Validação de sessão melhorada
         if (_sessionId is null)
         {
             _logger.LogWarning("Cannot send order {ClOrdId} - session not initialized", order.ClOrdId);
