@@ -1,14 +1,14 @@
-namespace FixTrading.OrderAccumulator.Worker
-{
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            var builder = Host.CreateApplicationBuilder(args);
-            builder.Services.AddHostedService<Worker>();
+using FixTrading.OrderAccumulator.Worker;
+using FixTrading.OrderProcessing.Application.Services;
+using FixTrading.OrderProcessing.Infrastructure.Fix;
 
-            var host = builder.Build();
-            host.Run();
-        }
-    }
-}
+var builder = Host.CreateApplicationBuilder(args);
+
+builder.Services.AddFixAcceptor(builder.Configuration);
+
+builder.Services.AddSingleton<ExposureApplicationService>();
+
+builder.Services.AddHostedService<FixAcceptorWorker>();
+
+var host = builder.Build();
+host.Run();
