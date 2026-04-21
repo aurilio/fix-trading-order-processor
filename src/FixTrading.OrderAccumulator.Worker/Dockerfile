@@ -1,27 +1,33 @@
-# See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
+# See https://aka.ms/customizecontainer to learn how to customize your debug container
 
-# This stage is used when running from VS in fast mode (Default for Debug configuration)
 FROM mcr.microsoft.com/dotnet/runtime:8.0 AS base
 USER $APP_UID
 WORKDIR /app
 
-
-# This stage is used to build the service project
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["src/FixTrading.OrderAccumulator.Worker/FixTrading.OrderAccumulator.Worker.csproj", "src/FixTrading.OrderAccumulator.Worker/"]
-RUN dotnet restore "./src/FixTrading.OrderAccumulator.Worker/FixTrading.OrderAccumulator.Worker.csproj"
-COPY . .
-WORKDIR "/src/src/FixTrading.OrderAccumulator.Worker"
-RUN dotnet build "./FixTrading.OrderAccumulator.Worker.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
-# This stage is used to publish the service project to be copied to the final stage
+# Copia todos os .csproj primeiro (para cache de restore)
+COPY ["src/FixTrading.OrderAccumulator.Worker/FixTrading.OrderAccumulator.Worker.csproj", "src/FixTrading.OrderAccumulator.Worker/"]
+COPY ["src/FixTrading.OrderProcessing.Infrastructure.Fix/FixTrading.OrderProcessing.Infrastructure.Fix.csproj", "src/FixTrading.OrderProcessing.Infrastructure.Fix/"]
+COPY ["src/FixTrading.OrderProcessing.Application/FixTrading.OrderProcessing.Application.csproj", "src/FixTrading.OrderProcessing.Application/"]
+COPY ["src/FixTrading.OrderProcessing.Domain/FixTrading.OrderProcessing.Domain.csproj", "src/FixTrading.OrderProcessing.Domain/"]
+
+# Restore
+RUN dotnet restore "src/FixTrading.OrderAccumulator.Worker/FixTrading.OrderAccumulator.Worker.csproj"
+
+# Copia todo o código fonte
+COPY . .
+
+# Build
+WORKDIR "/src/src/FixTrading.OrderAccumulator.Worker"
+RUN dotnet build "FixTrading.OrderAccumulator.Worker.csproj" -c $BUILD_CONFIGURATION -o /app/build
+
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./FixTrading.OrderAccumulator.Worker.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "FixTrading.OrderAccumulator.Worker.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
-# This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .

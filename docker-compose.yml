@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+  order-accumulator:
+    image: aurilio/fix-trading-order-accumulator:latest
+    container_name: fix-order-accumulator
+    environment:
+      - DOTNET_ENVIRONMENT=Production
+      - Fix__SenderCompId=ORDER_ACCUMULATOR
+      - Fix__TargetCompId=ORDER_GENERATOR
+      - Fix__Host=0.0.0.0
+      - Fix__Port=5001
+      - Fix__BeginString=FIX.4.4
+      - Fix__HeartBeatInterval=30
+      - Fix__ResetOnLogon=true
+      - Fix__ResetOnLogout=true
+      - Fix__ResetOnDisconnect=true
+      - Fix__FileStorePath=/app/store/acceptor
+    ports:
+      - "5001:5001"
+    volumes:
+      - fix-acceptor-store:/app/store
+    networks:
+      - fix-network
+    restart: unless-stopped
+
+  order-generator:
+    image: aurilio/fix-trading-order-generator:latest
+    container_name: fix-order-generator
+    environment:
+      - DOTNET_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:8080
+      - Fix__SenderCompId=ORDER_GENERATOR
+      - Fix__TargetCompId=ORDER_ACCUMULATOR
+      - Fix__Host=order-accumulator
+      - Fix__Port=5001
+      - Fix__BeginString=FIX.4.4
+      - Fix__HeartBeatInterval=30
+      - Fix__ResetOnLogon=true
+      - Fix__ResetOnLogout=true
+      - Fix__ResetOnDisconnect=true
+      - Fix__FileStorePath=/app/store/initiator
+    ports:
+      - "5000:8080"
+    volumes:
+      - fix-initiator-store:/app/store
+    networks:
+      - fix-network
+    depends_on:
+      - order-accumulator
+    restart: unless-stopped
+
+volumes:
+  fix-acceptor-store:
+  fix-initiator-store:
+
+networks:
+  fix-network:
+    driver: bridge
