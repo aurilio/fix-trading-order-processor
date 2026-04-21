@@ -2,11 +2,11 @@
 
 Sistema de processamento de ordens financeiras utilizando o protocolo FIX 4.4, implementado com arquitetura limpa (Clean Architecture) e padrões de design modernos em .NET 8.
 
-## 📋 Descrição
+## Descrição
 
 Este projeto simula um ambiente de trading eletrônico onde ordens de compra e venda são enviadas através do protocolo FIX (Financial Information eXchange). A aplicação é composta por uma API REST que gera ordens e um Worker Service que as processa e acumula, calculando a exposição financeira por ativo em tempo real.
 
-## 🚀 Tecnologias Utilizadas
+## Tecnologias Utilizadas
 
 - **Linguagem:** C# 12
 - **Framework:** .NET 8
@@ -19,12 +19,12 @@ Este projeto simula um ambiente de trading eletrônico onde ordens de compra e v
 - **Padrões:** DDD, Repository Pattern, Dependency Injection
 
 
-## ⚙️ Pré-requisitos
+## Pré-requisitos
 
 - [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
 - Visual Studio 2022+ ou VS Code
 
-## 🔧 Instalação e Execução
+## Instalação e Execução
 
 1. **Clone o repositório:**
 
@@ -38,7 +38,7 @@ cd fix-trading-order-processor
 dotnet restore
 ```
 
-### ▶️ Opção 1: Visual Studio
+### Opção 1: Visual Studio
 
 3. **Abra a solution** `fix-trading-order-processor.sln` no Visual Studio
 
@@ -52,7 +52,7 @@ dotnet restore
 
 5. **Pressione `F5`** ou clique em **Start** para executar ambos os projetos
 
-### ▶️ Opção 2: Linha de Comando
+### Opção 2: Linha de Comando
 
 3. **Execute o Worker (Acceptor) primeiro:**
 ```bash
