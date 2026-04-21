@@ -63,3 +63,22 @@ cd src/FixTrading.OrderAccumulator.Worker dotnet run
 ```bash
 cd src/FixTrading.OrderGenerator.Api dotnet run
 ```
+
+## 🐳 Execução com Docker
+
+### Pré-requisitos
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+- **WSL2 + Docker Engine** | Docker instalado diretamente no WSL2
+
+### Executar
+
+1. **Baixe o arquivo `docker-compose.yml`** ou clone o repositório
+
+2. **Execute o comando:**
+```bash
+docker-compose up -d
+```
+
+3. **Acesse a aplicação:**
+   - Interface Web: http://localhost:5000
+   - Swagger: http://localhost:5000/swagger
