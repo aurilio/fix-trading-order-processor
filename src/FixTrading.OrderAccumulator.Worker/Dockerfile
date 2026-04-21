@@ -1,8 +1,10 @@
-# See https://aka.ms/customizecontainer to learn how to customize your debug container
-
 FROM mcr.microsoft.com/dotnet/runtime:8.0 AS base
-USER $APP_UID
 WORKDIR /app
+
+# Cria diretório de store com permissões antes de trocar usuário
+RUN mkdir -p /app/store/acceptor && chmod -R 777 /app/store
+
+USER $APP_UID
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
