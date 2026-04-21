@@ -30,7 +30,7 @@ public class Program
 
         builder.Services.AddFixInitiator(builder.Configuration);
 
-        builder.Services.AddSingleton<IOrderApplicationService, OrderApplicationService>();
+        builder.Services.AddScoped<IOrderApplicationService, OrderApplicationService>();
 
         builder.Services.AddHostedService<FixClientHostedService>();
 

@@ -6,6 +6,7 @@ using FixTrading.OrderProcessing.Infrastructure.Fix.Repositories;
 using FixTrading.OrderProcessing.Infrastructure.Fix.Server;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace FixTrading.OrderProcessing.Infrastructure.Fix;
 
@@ -15,7 +16,7 @@ public static class DependencyInjection
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        services.Configure<FixSettings>(configuration.GetSection(FixSettings.SectionName));
+        services.AddFixCore(configuration);
         services.AddSingleton<FixInitiatorClient>();
         services.AddSingleton<IFixClient>(sp => sp.GetRequiredService<FixInitiatorClient>());
 
@@ -26,10 +27,19 @@ public static class DependencyInjection
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        services.Configure<FixSettings>(configuration.GetSection(FixSettings.SectionName));
+        services.AddFixCore(configuration);
         services.AddSingleton<IOrderRepository, InMemoryOrderRepository>();
-        services.AddSingleton<TimeProvider>(TimeProvider.System);
         services.AddSingleton<FixAcceptorServer>();
+
+        return services;
+    }
+
+    private static IServiceCollection AddFixCore(
+        this IServiceCollection services,
+        IConfiguration configuration)
+    {
+        services.Configure<FixSettings>(configuration.GetSection(FixSettings.SectionName));
+        services.TryAddSingleton<TimeProvider>(TimeProvider.System);
 
         return services;
     }

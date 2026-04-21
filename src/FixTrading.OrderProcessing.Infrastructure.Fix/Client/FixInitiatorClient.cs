@@ -110,6 +110,8 @@ public sealed class FixInitiatorClient : IFixClient, IDisposable
 
     private SessionSettings CreateSettings()
     {
+        var dictionaryPath = Path.Combine(AppContext.BaseDirectory, "FIX44.xml");
+
         var configString = $@"
                             [DEFAULT]
                             ConnectionType=initiator
@@ -118,7 +120,7 @@ public sealed class FixInitiatorClient : IFixClient, IDisposable
                             StartTime=00:00:00
                             EndTime=00:00:00
                             UseDataDictionary=Y
-                            DataDictionary=FIX44.xml
+                            DataDictionary={dictionaryPath}
                             HeartBtInt={_settings.HeartBeatInterval}
                             ResetOnLogon={(_settings.ResetOnLogon ? "Y" : "N")}
                             ResetOnLogout={(_settings.ResetOnLogout ? "Y" : "N")}
