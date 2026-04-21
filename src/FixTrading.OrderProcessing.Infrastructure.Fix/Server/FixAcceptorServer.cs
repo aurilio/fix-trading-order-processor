@@ -57,6 +57,8 @@ public sealed class FixAcceptorServer : IDisposable
 
     private SessionSettings CreateSettings()
     {
+        var dictionaryPath = Path.Combine(AppContext.BaseDirectory, "FIX44.xml");
+
         var configString = $@"
                             [DEFAULT]
                             ConnectionType=acceptor
@@ -65,7 +67,7 @@ public sealed class FixAcceptorServer : IDisposable
                             StartTime=00:00:00
                             EndTime=00:00:00
                             UseDataDictionary=Y
-                            DataDictionary=FIX44.xml
+                            DataDictionary={dictionaryPath}
                             HeartBtInt={_settings.HeartBeatInterval}
                             ResetOnLogon={(_settings.ResetOnLogon ? "Y" : "N")}
                             ResetOnLogout={(_settings.ResetOnLogout ? "Y" : "N")}
@@ -73,8 +75,8 @@ public sealed class FixAcceptorServer : IDisposable
 
                             [SESSION]
                             BeginString={_settings.BeginString}
-                            SenderCompID={_settings.TargetCompId}
-                            TargetCompID={_settings.SenderCompId}
+                            SenderCompID={_settings.SenderCompId}
+                            TargetCompID={_settings.TargetCompId}
                             SocketAcceptPort={_settings.Port}
                             ";
 

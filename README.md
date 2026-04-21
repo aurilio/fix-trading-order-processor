@@ -1,26 +1,65 @@
-# Project Empty Template
+# FIX Trading Order Processor
 
-Este é um repositório de exemplo para você começar a desenvolver a questão, leia com atenção os requisitos do enunciado da questão na plataforma e seguia as boas práticas sobre como utilizar este repositório.
+Sistema de processamento de ordens financeiras utilizando o protocolo FIX 4.4, implementado com arquitetura limpa (Clean Architecture) e padrões de design modernos em .NET 8.
 
+## Descrição
 
-## Readme do Repositório
+Este projeto simula um ambiente de trading eletrônico onde ordens de compra e venda são enviadas através do protocolo FIX (Financial Information eXchange). A aplicação é composta por uma API REST que gera ordens e um Worker Service que as processa e acumula, calculando a exposição financeira por ativo em tempo real.
 
-- Deve conter o título do projeto
-- Uma descrição sobre o projeto em frase
-- Deve conter uma lista com linguagem, framework e/ou tecnologias usadas
-- Como instalar e usar o projeto (instruções)
-- Não esqueça o [.gitignore](https://www.toptal.com/developers/gitignore)
-- Se está usando github pessoal, referencie que é um challenge by coodesh:  
+## Tecnologias Utilizadas
 
->  This is a challenge by [Coodesh](https://coodesh.com/)
-
-## Finalização e Instruções para a Apresentação
-
-1. Adicione o link do repositório com a sua solução na questão na plataforma
-2. Verifique se o Readme está bom e faça o commit final em seu repositório;
-3. Envie e aguarde as instruções para seguir. Caso o teste tenha apresentação de vídeo, dentro da tela de entrega será possível gravar após adicionar o link do repositório. Sucesso e boa sorte. =)
+- **Linguagem:** C# 12
+- **Framework:** .NET 8
+- **Protocolo:** FIX 4.4 (Financial Information eXchange)
+- **Bibliotecas:**
+  - QuickFIXn - Implementação do protocolo FIX
+  - FluentValidation - Validação de requests
+  - Swashbuckle - Documentação Swagger/OpenAPI
+- **Arquitetura:** Clean Architecture (Domain, Application, Infrastructure)
+- **Padrões:** DDD, Repository Pattern, Dependency Injection
 
 
-## Suporte
+## Pré-requisitos
 
-Para tirar dúvidas sobre o processo envie uma mensagem diretamente a um especialista no chat da plataforma. 
+- [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
+- Visual Studio 2022+ ou VS Code
+
+## Instalação e Execução
+
+1. **Clone o repositório:**
+
+```bash
+git clone https://github.com/aurilio/fix-trading-order-processor.git
+cd fix-trading-order-processor
+```
+
+2. **Restaure as dependências:**
+```bash
+dotnet restore
+```
+
+### Opção 1: Visual Studio
+
+3. **Abra a solution** `fix-trading-order-processor.sln` no Visual Studio
+
+4. **Configure múltiplos projetos de inicialização:**
+   - Clique com o botão direito na Solution __Set Startup Projects__
+   - Selecione __Multiple startup projects__
+   - Defina **Action = Start** para:
+     - `FixTrading.OrderAccumulator.Worker`
+     - `FixTrading.OrderGenerator.Api`
+   - Clique em **OK**
+
+5. **Pressione `F5`** ou clique em **Start** para executar ambos os projetos
+
+### Opção 2: Linha de Comando
+
+3. **Execute o Worker (Acceptor) primeiro:**
+```bash
+cd src/FixTrading.OrderAccumulator.Worker dotnet run
+```
+
+4. **Em outro terminal, execute a API (Initiator):**
+```bash
+cd src/FixTrading.OrderGenerator.Api dotnet run
+```
