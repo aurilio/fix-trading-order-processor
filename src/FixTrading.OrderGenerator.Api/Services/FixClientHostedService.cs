@@ -2,9 +2,7 @@ using FixTrading.OrderProcessing.Infrastructure.Fix.Client;
 
 namespace FixTrading.OrderGenerator.Api.Services;
 
-/// <summary>
-/// Hosted Service que gerencia o lifecycle do FIX Initiator Client.
-/// </summary>
+// Hosted Service que gerencia o lifecycle do FIX Initiator Client.
 public sealed class FixClientHostedService : IHostedService
 {
     private readonly FixInitiatorClient _fixClient;

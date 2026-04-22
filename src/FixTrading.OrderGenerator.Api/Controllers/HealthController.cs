@@ -18,9 +18,6 @@ public class HealthController : ControllerBase
         _timeProvider = timeProvider;
     }
 
-    /// <summary>
-    /// Verifica o status da conexão FIX.
-    /// </summary>
     [HttpGet]
     [ProducesResponseType(typeof(HealthStatus), StatusCodes.Status200OK)]
     public IActionResult GetHealth()

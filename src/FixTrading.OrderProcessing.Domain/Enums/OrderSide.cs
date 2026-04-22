@@ -40,9 +40,7 @@ public static class OrderSideExtensions
         return side;
     }
 
-    /// <summary>
-    /// Converte char FIX (Tag 54) para OrderSide.
-    /// </summary>
+    // Converte char FIX (Tag 54) para OrderSide.
     public static OrderSide FromFixValue(char fixValue) => fixValue switch
     {
         '1' => OrderSide.Buy,
@@ -50,9 +48,7 @@ public static class OrderSideExtensions
         _ => throw new DomainException($"Invalid FIX side value: {fixValue}", "INVALID_SIDE")
     };
 
-    /// <summary>
-    /// Converte OrderSide para char FIX (Tag 54).
-    /// </summary>
+    // Converte OrderSide para char FIX (Tag 54).
     public static char ToFixValue(this OrderSide side) => side switch
     {
         OrderSide.Buy => '1',
