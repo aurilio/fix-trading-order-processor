@@ -15,6 +15,10 @@ Este projeto simula um ambiente de trading eletrônico onde ordens de compra e v
   - QuickFIXn - Implementação do protocolo FIX
   - FluentValidation - Validação de requests
   - Swashbuckle - Documentação Swagger/OpenAPI
+  - xUnit - Framework de testes
+  - FluentAssertions - Assertions expressivas
+  - NSubstitute - Mocking
+  - BenchmarkDotNet - Benchmarks de performance
 - **Arquitetura:** Clean Architecture (Domain, Application, Infrastructure)
 - **Padrões:** DDD, Repository Pattern, Dependency Injection
 
@@ -64,7 +68,7 @@ cd src/FixTrading.OrderAccumulator.Worker dotnet run
 cd src/FixTrading.OrderGenerator.Api dotnet run
 ```
 
-## 🐳 Execução com Docker
+## Execução com Docker
 
 ### Pré-requisitos
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/)
@@ -81,4 +85,11 @@ docker-compose up -d
 
 3. **Acesse a aplicação:**
    - Interface Web: http://localhost:5000
-   - Swagger: http://localhost:5000/swagger
+
+
+### Benchmarks de Performance
+
+Para executar o benchmarks e medir performance.
+```bash
+dotnet run -c Release --project tests/FixTrading.OrderProcessing.Benchmarks
+```

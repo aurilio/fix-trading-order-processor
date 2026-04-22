@@ -36,7 +36,6 @@ public class OrdersController : ControllerBase
             "Received order request: {Symbol} {Side} {Qty}@{Price}",
             request.Symbol, request.Side, request.Quantity, request.Price);
 
-        // Validação com FluentValidation
         var validationResult = await _validator.ValidateAsync(request, cancellationToken);
         if (!validationResult.IsValid)
         {
